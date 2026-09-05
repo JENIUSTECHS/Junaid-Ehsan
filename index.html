@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Junaid Ehsan | Software Engineer & Web Developer</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* === CSS VARIABLES === */
+        :root {
+            --bg-dark: #0a0f1d;
+            --primary-glow: #00d2ff;
+            --secondary-glow: #3a7bd5;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-hover: rgba(255, 255, 255, 0.08);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* === GLOBAL RESETS === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        canvas#particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* === TYPOGRAPHY === */
+        h1, h2, h3, h4 { font-family: 'Space Grotesk', sans-serif; }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* === GLASSMORPHISM & UTILS === */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+        }
+
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .section-container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 2rem; 
+            text-align: center;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* === NAVBAR === */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 20px 0;
+            transition: var(--transition);
+        }
+        
+        header.scrolled {
+            background: rgba(10, 15, 29, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+        
+        .logo i {
+            font-size: 1.6rem;
+            background: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 5px rgba(0, 210, 255, 0.5));
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary-glow);
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-main);
+        }
+
+        /* === HERO SECTION === */
+        #home {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+            padding-top: 100px; 
+            min-height: 80vh; 
+        }
+
+        .hero-content {
+            flex: 1;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(0, 210, 255, 0.1);
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary-glow);
+            margin-bottom: 20px;
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.1);
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 15px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .hero-desc {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            max-width: 90%;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--secondary-glow), var(--primary-glow));
+            color: #000;
+            box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 6px 20px rgba(0, 210, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--glass-border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--glass-hover);
+            border-color: var(--primary-glow);
+        }
+
+        .hero-image-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .hero-portrait {
+            width: 240px; 
+            height: 300px; 
+            border-radius: 24px; 
+            object-fit: cover;
+            position: relative;
+            z-index: 2;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: var(--glass-bg);
+            background-image: url('images/image1.jpeg'); 
+            background-size: cover;
+            background-position: center;
+        }
+
+        .accent-ring {
+            position: absolute;
+            width: 280px; 
+            height: 340px; 
+            border: 2px solid var(--primary-glow);
+            border-radius: 28px;
+            top: -20px;
+            left: calc(50% - 140px); 
+            z-index: 1;
+            opacity: 0.5;
+            animation: pulse-ring 4s infinite alternate;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 10px var(--primary-glow); }
+            100% { transform: scale(1.02); box-shadow: 0 0 30px var(--primary-glow), inset 0 0 20px var(--primary-glow); }
+        }
+
+        /* === TILT CARDS & GRIDS === */
+        .tilt-card {
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tilt-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .tilt-card:hover {
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 210, 255, 0.2);
+            border-color: rgba(0, 210, 255, 0.4);
+            z-index: 10;
+        }
+
+        .content-3d {
+            transform: translateZ(30px);
+            position: relative;
+            z-index: 2;
+        }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+
+        /* === ABOUT SECTION === */
+        .about-text { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 20px; }
+        .info-matrix { padding: 30px; }
+        .info-item { margin-bottom: 20px; }
+        .info-label { font-weight: 800; color: var(--text-main); margin-bottom: 5px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;}
+        .info-value { color: var(--primary-glow); font-size: 1.1rem; }
+
+        /* === EDUCATION SECTION === */
+        .edu-card { padding: 30px; border-left: 4px solid var(--primary-glow); }
+        .edu-degree { font-size: 1.4rem; font-weight: 700; margin-bottom: 10px; }
+        .edu-inst { color: var(--text-muted); margin-bottom: 15px; font-size: 1.1rem;}
+        .edu-meta { display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--secondary-glow); font-weight: 600;}
+
+        /* === SKILLS SECTION === */
+        .skill-card { padding: 30px; text-align: center; }
+        .skill-icon { font-size: 3rem; margin-bottom: 20px; background: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .skill-title { font-size: 1.2rem; margin-bottom: 15px; font-weight: 700; }
+        .skill-tags { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+        .skill-tag { background: rgba(255,255,255,0.05); padding: 5px 12px; border-radius: 20px; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.1); }
+
+        /* === PORTFOLIO SECTION === */
+        .project-card { padding: 30px; display: flex; flex-direction: column; height: 100%; }
+        .project-badge { align-self: flex-start; background: rgba(0, 210, 255, 0.15); color: var(--primary-glow); padding: 5px 12px; border-radius: 4px; font-size: 0.8rem; font-weight: 700; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;}
+        .project-badge.pulse { animation: badge-pulse 2s infinite; background: rgba(255, 50, 100, 0.15); color: #ff3264; }
+        @keyframes badge-pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+        .project-title { font-size: 1.5rem; margin-bottom: 15px; }
+        .project-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 25px; flex-grow: 1; }
+        .project-links { display: flex; gap: 15px; margin-top: auto; }
+        .project-links a { color: var(--text-main); font-size: 1.2rem; transition: var(--transition); }
+        .project-links a:hover { color: var(--primary-glow); transform: translateY(-3px); }
+
+        /* === CONTACT SECTION === */
+        .contact-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
+        .contact-info-card { padding: 40px; }
+        .contact-item { display: flex; align-items: center; gap: 20px; margin-bottom: 30px; }
+        .contact-icon { width: 50px; height: 50px; border-radius: 50%; background: rgba(0, 210, 255, 0.1); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--primary-glow); }
+        .contact-detail h4 { margin-bottom: 5px; color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase;}
+        .contact-detail p { font-size: 1.1rem; font-weight: 600; }
+        
+        .social-links { display: flex; gap: 15px; margin-top: 40px; flex-wrap: wrap;}
+        .social-link { width: 45px; height: 45px; border-radius: 12px; background: var(--glass-bg); border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: var(--transition); }
+        .social-link:hover { background: var(--primary-glow); color: #000; box-shadow: 0 0 15px var(--primary-glow); transform: translateY(-5px); }
+
+        .contact-form { padding: 40px; display: flex; flex-direction: column; gap: 20px; }
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        .form-group label { font-size: 0.9rem; color: var(--text-muted); }
+        .form-control { width: 100%; padding: 12px 15px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--text-main); font-family: inherit; transition: var(--transition); }
+        .form-control:focus { outline: none; border-color: var(--primary-glow); box-shadow: 0 0 10px rgba(0,210,255,0.2); }
+        textarea.form-control { resize: vertical; min-height: 120px; }
+        
+        /* === FOOTER === */
+        footer { border-top: 1px solid var(--glass-border); padding: 30px 20px; text-align: center; background: rgba(10, 15, 29, 0.8); backdrop-filter: blur(10px); position: relative; margin-top: 40px; }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .time-badge { background: var(--glass-bg); padding: 8px 15px; border-radius: 20px; border: 1px solid var(--glass-border); font-size: 0.85rem; font-family: monospace; display: flex; align-items: center; gap: 8px; }
+        .pulse-dot { width: 8px; height: 8px; background: #00ff00; border-radius: 50%; animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        .back-to-top { width: 40px; height: 40px; border-radius: 50%; background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-main); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
+        .back-to-top:hover { background: var(--primary-glow); color: #000; }
+
+        /* === MOBILE RESPONSIVENESS === */
+        @media (max-width: 992px) {
+            .hero-title { font-size: 3rem; }
+            .contact-wrapper { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed; top: 0; right: -100%; width: 250px; height: 100vh;
+                background: rgba(10, 15, 29, 0.95); backdrop-filter: blur(15px);
+                flex-direction: column; align-items: center; justify-content: center;
+                border-left: 1px solid var(--glass-border); transition: 0.4s ease;
+            }
+            .nav-links.nav-active { right: 0; }
+            .mobile-menu-btn { display: block; z-index: 101; }
+            
+            #home { flex-direction: column; text-align: center; padding-top: 120px; }
+            .hero-cta { justify-content: center; }
+            .hero-desc { max-width: 100%; margin: 0 auto 30px auto; }
+            .accent-ring { left: calc(50% - 140px); }
+            
+            .grid-2 { grid-template-columns: 1fr; }
+            .footer-content { flex-direction: column; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="particle-canvas"></canvas>
+
+    <header id="header">
+        <nav>
+            <div class="logo">
+                <i class="fas fa-layer-group"></i>
+                <span class="gradient-text">Junaid.</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#education" class="nav-link">Education</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#portfolio" class="nav-link">Portfolio</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="mobile-menu-btn"><i class="fas fa-bars"></i></div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="section-container visible">
+            <div class="hero-content content-3d">
+                <div class="hero-badge">
+                    <i class="fas fa-star"></i> Software Engineer
+                </div>
+                <h2 class="hero-subtitle">Hi, I am</h2>
+                <h1 class="hero-title">Junaid <span class="gradient-text">Ehsan</span></h1>
+                <h3 class="hero-subtitle">Software Engineer & Creative Web Developer</h3>
+                <p class="hero-desc">
+                    Engineering high-performance native Android applications, innovative web architectures, and scalable digital experiences from Punjab, Pakistan.
+                </p>
+                <div class="hero-cta">
+                    <a href="#portfolio" class="btn btn-primary nav-link"><i class="fas fa-rocket"></i> Explore Portfolio</a>
+                    <a href="https://www.fiverr.com/s/P4RZ3Yg" target="_blank" class="btn btn-primary"><i class="fas fa-briefcase"></i> Hire Me</a>
+                    <a href="#contact" class="btn btn-secondary nav-link"><i class="fas fa-envelope"></i> Contact Me</a>
+                    <a href="https://drive.google.com/file/d/1Trrl2miHkIQ73j7HWgRLTu8Eq9PnpOYk/view?usp=drivesdk" target="_blank" class="btn btn-secondary"><i class="fas fa-download"></i> CV / Resume</a>
+                </div>
+            </div>
+            <div class="hero-image-container tilt-card">
+                <div class="accent-ring"></div>
+                <div class="hero-portrait"></div> 
+            </div>
+        </section>
+
+        <section id="about" class="section-container">
+            <h2 class="section-title">About <span class="gradient-text">Me</span></h2>
+            <div class="grid-2">
+                <div class="glass tilt-card info-matrix">
+                    <div class="content-3d">
+                        <p class="about-text">
+                            I am a highly motivated Software Engineering student with a proven track record of academic excellence (3.96 CGPA) and strong analytical thinking. Equipped with hands-on expertise in native mobile development, modern frontend architectures, and UI/UX design, I bridge complex engineering logic with intuitive visual design.
+                        </p>
+                        <p class="about-text">
+                            Known for rapid adaptability and clear communication, I build real-world products engineered for speed, security, and scalability.
+                        </p>
+                    </div>
+                </div>
+                <div class="glass tilt-card info-matrix">
+                    <div class="content-3d">
+                        <div class="info-item">
+                            <div class="info-label">Education Status</div>
+                            <div class="info-value">BS Software Engineering</div>
+                            <div style="color: var(--text-muted); font-size: 0.9rem;">Virtual University of Pakistan</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Professional Status</div>
+                            <div class="info-value">Active Developer & Scholar</div>
+                            <div style="color: var(--text-muted); font-size: 0.9rem;">Grade A+</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Core Engineering Focus</div>
+                            <div class="info-value">Native Android & Full-Stack Web</div>
+                            <div style="color: var(--text-muted); font-size: 0.9rem;">Kotlin, Jetpack Compose, Modern Web Design</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="education" class="section-container">
+            <h2 class="section-title">Academic <span class="gradient-text">Background</span></h2>
+            <div class="grid-2">
+                <div class="glass tilt-card edu-card">
+                    <div class="content-3d">
+                        <div class="edu-degree">BS in Software Engineering</div>
+                        <div class="edu-inst">Virtual University of Pakistan, Lahore</div>
+                        <p style="margin-bottom: 15px; color: var(--text-muted);">Academic Track: 3.96 CGPA | Grade: A+</p>
+                        <div class="edu-meta">
+                            <span><i class="fas fa-calendar-alt"></i> 2024 – 2028 (Ongoing)</span>
+                            <span><i class="fas fa-map-marker-alt"></i> Lahore, PK</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass tilt-card edu-card">
+                    <div class="content-3d">
+                        <div class="edu-degree">Intermediate in Computer Science</div>
+                        <div class="edu-inst">Paradise Higher Secondary School</div>
+                        <p style="margin-bottom: 15px; color: var(--text-muted);">Pre-Engineering & Computer Sciences | Grade: A+</p>
+                        <div class="edu-meta">
+                            <span><i class="fas fa-calendar-alt"></i> 2022 – 2024</span>
+                            <span><i class="fas fa-map-marker-alt"></i> Shakargarh, PK</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="section-container">
+            <h2 class="section-title">Technical <span class="gradient-text">Arsenal</span></h2>
+            <div class="grid-3">
+                <div class="glass tilt-card skill-card">
+                    <div class="content-3d">
+                        <i class="fab fa-android skill-icon"></i>
+                        <h3 class="skill-title">Native Mobile Dev</h3>
+                        <div class="skill-tags">
+                            <span class="skill-tag">Kotlin</span>
+                            <span class="skill-tag">Jetpack Compose</span>
+                            <span class="skill-tag">Android SDK</span>
+                            <span class="skill-tag">MVVM</span>
+                            <span class="skill-tag">Room DB</span>
+                            <span class="skill-tag">Firebase</span>
+                            <span class="skill-tag">Coroutines</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass tilt-card skill-card">
+                    <div class="content-3d">
+                        <i class="fas fa-laptop-code skill-icon"></i>
+                        <h3 class="skill-title">Web Engineering</h3>
+                        <div class="skill-tags">
+                            <span class="skill-tag">HTML5 / CSS3</span>
+                            <span class="skill-tag">JavaScript (ES6+)</span>
+                            <span class="skill-tag">React JS</span>
+                            <span class="skill-tag">Tailwind CSS</span>
+                            <span class="skill-tag">Glassmorphism</span>
+                            <span class="skill-tag">Three.js / Canvas</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass tilt-card skill-card">
+                    <div class="content-3d">
+                        <i class="fas fa-tools skill-icon"></i>
+                        <h3 class="skill-title">Tools & Practices</h3>
+                        <div class="skill-tags">
+                            <span class="skill-tag">Git & GitHub</span>
+                            <span class="skill-tag">Android Studio</span>
+                            <span class="skill-tag">Figma UI/UX</span>
+                            <span class="skill-tag">Vercel Deployment</span>
+                            <span class="skill-tag">REST APIs</span>
+                            <span class="skill-tag">Performance Opt.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="portfolio" class="section-container">
+            <h2 class="section-title">Featured <span class="gradient-text">Projects</span></h2>
+            <div class="grid-2">
+                
+                <div class="glass tilt-card project-card">
+                    <div class="content-3d">
+                        <div class="project-badge">Mobile Innovation • Live Production</div>
+                        <h3 class="project-title">Jenius Blitz</h3>
+                        <p class="project-desc">
+                            An all-in-one high-performance Android web browser and super-fast downloader built with native Kotlin and Jetpack Compose. Engineered for ad-free high-speed browsing, ultra-aggressive multi-threaded downloading, and streaming optimization utilizing up to 90% available bandwidth.
+                        </p>
+                        <div class="skill-tags" style="justify-content: flex-start; margin-bottom: 20px;">
+                            <span class="skill-tag">Kotlin</span>
+                            <span class="skill-tag">Jetpack Compose</span>
+                            <span class="skill-tag">Coroutines</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://jeniusblitz.vercel.app/" target="_blank" title="Web Portal"><i class="fas fa-globe"></i></a>
+                            <a href="https://apkpure.com/jenius-blitz/com.junaid.jeniusblitz/download" target="_blank" title="Download APK"><i class="fab fa-android"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass tilt-card project-card">
+                    <div class="content-3d">
+                        <div class="project-badge">Web Architecture & UI/UX</div>
+                        <h3 class="project-title">Green Organic Deli</h3>
+                        <p class="project-desc">
+                            A responsive, modern restaurant and organic deli website prototype showcasing clean brand identity, appetizing menu showcase, fluid navigation, and optimized mobile conversion layouts.
+                        </p>
+                        <div class="skill-tags" style="justify-content: flex-start; margin-bottom: 20px;">
+                            <span class="skill-tag">HTML5/CSS3</span>
+                            <span class="skill-tag">Modern JS</span>
+                            <span class="skill-tag">Responsive UI</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://jeniustechs.github.io/greenorganicdeli.com/" target="_blank" title="Live Preview"><i class="fas fa-external-link-alt"></i></a>
+                            <a href="#" title="Source Code"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass tilt-card project-card">
+                    <div class="content-3d">
+                        <div class="project-badge pulse">In Active Development</div>
+                        <h3 class="project-title">Upcoming Enterprise Project</h3>
+                        <p class="project-desc">
+                            A highly scalable backend architecture integrating advanced cloud services and real-time data processing for enterprise-level resource management. Details currently under NDA.
+                        </p>
+                        <div class="project-links">
+                            <a href="#" style="opacity: 0.5; pointer-events: none;"><i class="fas fa-lock"></i> Coming Soon</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass tilt-card project-card">
+                    <div class="content-3d">
+                        <div class="project-badge pulse">R&D Phase</div>
+                        <h3 class="project-title">Next-Gen AI Solution</h3>
+                        <p class="project-desc">
+                            Experimenting with large language models and machine learning endpoints to build intuitive, context-aware digital assistants optimized for mobile hardware environments.
+                        </p>
+                        <div class="project-links">
+                            <a href="#" style="opacity: 0.5; pointer-events: none;"><i class="fas fa-lock"></i> Coming Soon</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="contact" class="section-container">
+            <h2 class="section-title">Let's <span class="gradient-text">Connect</span></h2>
+            <div class="contact-wrapper">
+                
+                <div class="glass tilt-card contact-info-card">
+                    <div class="content-3d">
+                        <div class="contact-item">
+                            <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                            <div class="contact-detail">
+                                <h4>Location</h4>
+                                <p>Punjab, Pakistan</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                            <div class="contact-detail">
+                                <h4>Email</h4>
+                                <p>junaidehsan0786@gmail.com</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon"><i class="fas fa-phone-alt"></i></div>
+                            <div class="contact-detail">
+                                <h4>Phone / WhatsApp</h4>
+                                <p>(+92) 343 7226761</p>
+                            </div>
+                        </div>
+
+                        <div class="social-links">
+                            <a href="https://wa.me/923437226761" target="_blank" class="social-link" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                            <a href="https://www.linkedin.com/in/junaid-ehsan-62ab68287?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" class="social-link" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="https://www.facebook.com/jenius.jenius.849535" target="_blank" class="social-link" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://www.instagram.com/jenius_s23?igsi=N2V4eXR0eWk3cjRs" target="_blank" class="social-link" title="Instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="https://vm.tiktok.com/ZS9SeFGbvPYAE-mGcsL/" target="_blank" class="social-link" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass tilt-card contact-form">
+                    <div class="content-3d">
+                        <form id="contactForm" onsubmit="handleFormSubmit(event)">
+                            <div class="form-group">
+                                <label>Your Name</label>
+                                <input type="text" class="form-control" required placeholder="John Doe">
+                            </div>
+                            <div class="form-group">
+                                <label>Your Email</label>
+                                <input type="email" class="form-control" required placeholder="john@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label>Subject</label>
+                                <input type="text" class="form-control" required placeholder="Project Inquiry">
+                            </div>
+                            <div class="form-group">
+                                <label>Message</label>
+                                <textarea class="form-control" required placeholder="Hello Junaid, I would like to discuss..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 10px;">
+                                <i class="fas fa-paper-plane"></i> Send Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2026 Designed & Engineered by <span class="gradient-text" style="font-weight: 700;">Junaid Ehsan</span> • All Rights Reserved</p>
+            <div class="time-badge">
+                <div class="pulse-dot"></div>
+                PKT: <span id="local-time">--:--:--</span>
+            </div>
+            <div class="back-to-top" onclick="scrollToTop()">
+                <i class="fas fa-arrow-up"></i>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 1. 3D Particle Ambient Canvas Background
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function initCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.radius = Math.random() * 1.5 + 0.5;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > width) this.vx = -this.vx;
+                if (this.y < 0 || this.y > height) this.vy = -this.vy;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(0, 210, 255, 0.5)';
+                ctx.fill();
+            }
+        }
+
+        function createParticles() {
+            particles = [];
+            let count = (window.innerWidth < 768) ? 40 : 100;
+            for (let i = 0; i < count; i++) particles.push(new Particle());
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, width, height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                // Connect close particles
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 120) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(0, 210, 255, ${0.15 - dist/800})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        window.addEventListener('resize', () => { initCanvas(); createParticles(); });
+        initCanvas();
+        createParticles();
+        animateParticles();
+
+        // 2. 3D Tilt Cards Effect
+        const tiltCards = document.querySelectorAll('.tilt-card');
+        tiltCards.forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = ((y - centerY) / centerY) * -10; // Max 10 deg rotation
+                const rotateY = ((x - centerX) / centerX) * 10;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            });
+        });
+
+        // 3. Routing, History Push State & Back Button Support
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        function navigateToSection(hashId, pushState = true) {
+            const target = document.querySelector(hashId);
+            if (target) {
+                // Smooth scroll via window
+                window.scrollTo({
+                    top: target.offsetTop - 80, // offset for navbar
+                    behavior: 'smooth'
+                });
+                
+                // Update active class
+                navLinks.forEach(l => l.classList.remove('active'));
+                document.querySelectorAll(`a[href="${hashId}"].nav-link`).forEach(l => l.classList.add('active'));
+
+                // Manage History State
+                if(pushState) {
+                    history.pushState({ section: hashId }, "", hashId);
+                }
+            }
+        }
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', e => {
+                const hashId = link.getAttribute('href');
+                if (hashId.startsWith('#')) {
+                    e.preventDefault();
+                    navigateToSection(hashId, true);
+                    // Close mobile menu if open
+                    document.querySelector('.nav-links').classList.remove('nav-active');
+                }
+            });
+        });
+
+        // Handle browser back/forward buttons
+        window.addEventListener('popstate', (e) => {
+            const hash = window.location.hash || '#home';
+            navigateToSection(hash, false);
+        });
+
+        // Ensure proper section shows on load
+        window.addEventListener('load', () => {
+            if(window.location.hash) {
+                setTimeout(() => navigateToSection(window.location.hash, false), 100);
+            }
+        });
+
+        // 4. Scroll Animations & Navbar Glass Effect
+        const sections = document.querySelectorAll('.section-container');
+        const header = document.getElementById('header');
+
+        const observerOptions = { root: null, threshold: 0.15, rootMargin: "0px" };
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // Sync active nav on scroll without pushing state aggressively
+                    const id = '#' + entry.target.id;
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    const activeLink = document.querySelector(`a[href="${id}"].nav-link`);
+                    if(activeLink) activeLink.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(sec => observer.observe(sec));
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) header.classList.add('scrolled');
+            else header.classList.remove('scrolled');
+        });
+
+        // 5. Utilities (Mobile Menu, Time, Contact Form)
+        document.querySelector('.mobile-menu-btn').addEventListener('click', () => {
+            document.querySelector('.nav-links').classList.toggle('nav-active');
+        });
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            history.pushState(null, "", "#home");
+        }
+
+        setInterval(() => {
+            const options = { timeZone: 'Asia/Karachi', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+            document.getElementById('local-time').textContent = new Date().toLocaleTimeString('en-US', options);
+        }, 1000);
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            btn.style.background = '#4CAF50';
+            
+            // Simulate API Call / Processing
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
+                e.target.reset();
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = '';
+                }, 3000);
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
