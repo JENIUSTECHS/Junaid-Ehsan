@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Junaid Ehsan | Software Engineer & Web Developer</title>
+
+    <!-- Vercel Web Analytics for Plain HTML -->
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -320,6 +326,9 @@
             transform: translateZ(30px);
             position: relative;
             z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
         }
 
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
@@ -347,6 +356,9 @@
 
         /* === PORTFOLIO SECTION === */
         .project-card { padding: 30px; display: flex; flex-direction: column; height: 100%; }
+        .project-image-container { width: 100%; height: 180px; border-radius: 8px; overflow: hidden; margin-bottom: 20px; border: 1px solid var(--glass-border); flex-shrink: 0;}
+        .project-image-container img { width: 100%; height: 100%; object-fit: cover; transition: var(--transition); }
+        .project-card:hover .project-image-container img { transform: scale(1.05); }
         .project-badge { align-self: flex-start; background: rgba(0, 210, 255, 0.15); color: var(--primary-glow); padding: 5px 12px; border-radius: 4px; font-size: 0.8rem; font-weight: 700; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;}
         .project-badge.pulse { animation: badge-pulse 2s infinite; background: rgba(255, 50, 100, 0.15); color: #ff3264; }
         @keyframes badge-pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
@@ -410,7 +422,6 @@
             .footer-content { flex-direction: column; justify-content: center; }
         }
     </style>
-    <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
@@ -575,28 +586,32 @@
             <h2 class="section-title">Featured <span class="gradient-text">Projects</span></h2>
             <div class="grid-2">
                 
+                <!-- JeniusDocAi Project Card -->
                 <div class="glass tilt-card project-card">
                     <div class="content-3d">
-                        <div class="project-badge">Mobile Innovation • Live Production</div>
-                        <h3 class="project-title">Jenius Blitz</h3>
+                        <div class="project-badge pulse">New Release • AI Solution</div>
+                        <h3 class="project-title">JeniusDocAi</h3>
                         <p class="project-desc">
-                            An all-in-one high-performance Android web browser and super-fast downloader built with native Kotlin and Jetpack Compose. Engineered for ad-free high-speed browsing, ultra-aggressive multi-threaded downloading, and streaming optimization utilizing up to 90% available bandwidth.
+                            An all-in-one AI assignment solver and PDF editor. Transform how you handle academic work with intelligent document synthesis and a complete PDF utility workflow in a unified, local-first workspace.
                         </p>
                         <div class="skill-tags" style="justify-content: flex-start; margin-bottom: 20px;">
-                            <span class="skill-tag">Kotlin</span>
-                            <span class="skill-tag">Jetpack Compose</span>
-                            <span class="skill-tag">Coroutines</span>
+                            <span class="skill-tag">Native Android</span>
+                            <span class="skill-tag">AI Integration</span>
+                            <span class="skill-tag">UI/UX Layouts</span>
                         </div>
                         <div class="project-links">
-                            <a href="https://jeniusblitz.vercel.app/" target="_blank" title="Web Portal"><i class="fas fa-globe"></i></a>
-                            <a href="https://apkpure.com/jenius-blitz/com.junaid.jeniusblitz/download" target="_blank" title="Download APK"><i class="fab fa-android"></i></a>
+                            <a href="https://jeniusdocai.vercel.app/" target="_blank" title="View Web Portal"><i class="fas fa-external-link-alt"></i></a>
                         </div>
                     </div>
                 </div>
 
+                <!-- Green Organic Deli Project Card -->
                 <div class="glass tilt-card project-card">
                     <div class="content-3d">
                         <div class="project-badge">Web Architecture & UI/UX</div>
+                        <div class="project-image-container">
+                            <img src="image_bf7347.jpg" alt="Green Organic Deli Interface">
+                        </div>
                         <h3 class="project-title">Green Organic Deli</h3>
                         <p class="project-desc">
                             A responsive, modern restaurant and organic deli website prototype showcasing clean brand identity, appetizing menu showcase, fluid navigation, and optimized mobile conversion layouts.
@@ -613,6 +628,27 @@
                     </div>
                 </div>
 
+                <!-- Jenius Blitz Project Card -->
+                <div class="glass tilt-card project-card">
+                    <div class="content-3d">
+                        <div class="project-badge">Mobile Innovation</div>
+                        <h3 class="project-title">Jenius Blitz</h3>
+                        <p class="project-desc">
+                            An all-in-one high-performance Android web browser and super-fast downloader built with native Kotlin and Jetpack Compose. Engineered for ad-free high-speed browsing, ultra-aggressive multi-threaded downloading, and streaming optimization.
+                        </p>
+                        <div class="skill-tags" style="justify-content: flex-start; margin-bottom: 20px;">
+                            <span class="skill-tag">Kotlin</span>
+                            <span class="skill-tag">Jetpack Compose</span>
+                            <span class="skill-tag">Coroutines</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://jeniusblitz.vercel.app/" target="_blank" title="Web Portal"><i class="fas fa-globe"></i></a>
+                            <a href="https://apkpure.com/jenius-blitz/com.junaid.jeniusblitz/download" target="_blank" title="Download APK"><i class="fab fa-android"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upcoming Enterprise Project -->
                 <div class="glass tilt-card project-card">
                     <div class="content-3d">
                         <div class="project-badge pulse">In Active Development</div>
@@ -620,19 +656,10 @@
                         <p class="project-desc">
                             A highly scalable backend architecture integrating advanced cloud services and real-time data processing for enterprise-level resource management. Details currently under NDA.
                         </p>
-                        <div class="project-links">
-                            <a href="#" style="opacity: 0.5; pointer-events: none;"><i class="fas fa-lock"></i> Coming Soon</a>
+                        <div class="skill-tags" style="justify-content: flex-start; margin-bottom: 20px;">
+                            <span class="skill-tag">Enterprise Architecture</span>
+                            <span class="skill-tag">Cloud Deployments</span>
                         </div>
-                    </div>
-                </div>
-
-                <div class="glass tilt-card project-card">
-                    <div class="content-3d">
-                        <div class="project-badge pulse">R&D Phase</div>
-                        <h3 class="project-title">Next-Gen AI Solution</h3>
-                        <p class="project-desc">
-                            Experimenting with large language models and machine learning endpoints to build intuitive, context-aware digital assistants optimized for mobile hardware environments.
-                        </p>
                         <div class="project-links">
                             <a href="#" style="opacity: 0.5; pointer-events: none;"><i class="fas fa-lock"></i> Coming Soon</a>
                         </div>
