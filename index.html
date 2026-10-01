@@ -356,14 +356,29 @@
 
         /* === PORTFOLIO SECTION === */
         .project-card { padding: 30px; display: flex; flex-direction: column; height: 100%; }
-        .project-image-container { width: 100%; height: 180px; border-radius: 8px; overflow: hidden; margin-bottom: 20px; border: 1px solid var(--glass-border); flex-shrink: 0;}
-        .project-image-container img { width: 100%; height: 100%; object-fit: cover; transition: var(--transition); }
-        .project-card:hover .project-image-container img { transform: scale(1.05); }
+        
+        .project-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .project-app-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            object-fit: cover;
+            border: 2px solid var(--glass-border);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            background: var(--bg-dark);
+        }
+
         .project-badge { align-self: flex-start; background: rgba(0, 210, 255, 0.15); color: var(--primary-glow); padding: 5px 12px; border-radius: 4px; font-size: 0.8rem; font-weight: 700; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;}
         .project-badge.pulse { animation: badge-pulse 2s infinite; background: rgba(255, 50, 100, 0.15); color: #ff3264; }
         @keyframes badge-pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
-        .project-title { font-size: 1.5rem; margin-bottom: 15px; }
-        .project-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 25px; flex-grow: 1; }
+        .project-title { font-size: 1.5rem; margin-bottom: 5px; }
+        .project-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 25px; flex-grow: 1; margin-top: 10px;}
         .project-links { display: flex; gap: 15px; margin-top: auto; }
         .project-links a { color: var(--text-main); font-size: 1.2rem; transition: var(--transition); }
         .project-links a:hover { color: var(--primary-glow); transform: translateY(-3px); }
@@ -589,11 +604,11 @@
                 <!-- Jenius Blitz Project Card -->
                 <div class="glass tilt-card project-card">
                     <div class="content-3d">
-                        <div class="project-image-container">
-                            <img src="images/jeniusblitzlogo.jpeg" alt="Jenius Blitz">
-                        </div>
                         <div class="project-badge">Mobile Innovation</div>
-                        <h3 class="project-title">Jenius Blitz</h3>
+                        <div class="project-header">
+                            <img src="images/jeniusblitzlogo.jpeg" alt="Jenius Blitz App Icon" class="project-app-icon">
+                            <h3 class="project-title">Jenius Blitz</h3>
+                        </div>
                         <p class="project-desc">
                             An all-in-one high-performance Android web browser and super-fast downloader built with native Kotlin and Jetpack Compose. Engineered for ad-free high-speed browsing, ultra-aggressive multi-threaded downloading, and streaming optimization.
                         </p>
@@ -612,11 +627,11 @@
                 <!-- JeniusDocAi Project Card -->
                 <div class="glass tilt-card project-card">
                     <div class="content-3d">
-                        <div class="project-image-container">
-                            <img src="images/jeniusdocai.png" alt="JeniusDocAi">
-                        </div>
                         <div class="project-badge pulse">New Release • AI Solution</div>
-                        <h3 class="project-title">JeniusDocAi</h3>
+                        <div class="project-header">
+                            <img src="images/jeniusdocai.png" alt="JeniusDocAi App Icon" class="project-app-icon">
+                            <h3 class="project-title">JeniusDocAi</h3>
+                        </div>
                         <p class="project-desc">
                             An all-in-one AI assignment solver and PDF editor. Transform how you handle academic work with intelligent document synthesis and a complete PDF utility workflow in a unified, local-first workspace.
                         </p>
@@ -634,11 +649,11 @@
                 <!-- SkyCast Project Card -->
                 <div class="glass tilt-card project-card">
                     <div class="content-3d">
-                        <div class="project-image-container">
-                            <img src="images/skycastlogo.jpg" alt="SkyCast Weather App">
-                        </div>
                         <div class="project-badge">Weather & Forecasts</div>
-                        <h3 class="project-title">SkyCast</h3>
+                        <div class="project-header">
+                            <img src="images/skycastlogo.jpg" alt="SkyCast App Icon" class="project-app-icon">
+                            <h3 class="project-title">SkyCast</h3>
+                        </div>
                         <p class="project-desc">
                             SkyCast is a modern, high-precision native Android weather and world-clock application featuring live hyper-local atmospheric forecasts, dynamic sky-gradient backgrounds, offline Room caching, and a direct 1-tap home screen widget.
                         </p>
@@ -657,7 +672,10 @@
                 <div class="glass tilt-card project-card">
                     <div class="content-3d">
                         <div class="project-badge">Web Architecture & UI/UX</div>
-                        <h3 class="project-title">Green Organic Deli</h3>
+                        <div class="project-header">
+                            <div class="project-app-icon" style="display:flex; align-items:center; justify-content:center; font-size:1.8rem; background: rgba(0, 210, 255, 0.1); color: var(--primary-glow);"><i class="fas fa-leaf"></i></div>
+                            <h3 class="project-title">Green Organic Deli</h3>
+                        </div>
                         <p class="project-desc">
                             A responsive, modern restaurant and organic deli website prototype showcasing clean brand identity, appetizing menu showcase, fluid navigation, and optimized mobile conversion layouts.
                         </p>
@@ -677,7 +695,10 @@
                 <div class="glass tilt-card project-card">
                     <div class="content-3d">
                         <div class="project-badge pulse">In Active Development</div>
-                        <h3 class="project-title">Upcoming Enterprise Project</h3>
+                        <div class="project-header">
+                            <div class="project-app-icon" style="display:flex; align-items:center; justify-content:center; font-size:1.8rem; background: rgba(255, 255, 255, 0.05); color: var(--text-muted);"><i class="fas fa-building"></i></div>
+                            <h3 class="project-title">Upcoming Enterprise Project</h3>
+                        </div>
                         <p class="project-desc">
                             A highly scalable backend architecture integrating advanced cloud services and real-time data processing for enterprise-level resource management. Details currently under NDA.
                         </p>
@@ -695,7 +716,10 @@
                 <div class="glass tilt-card project-card">
                     <div class="content-3d">
                         <div class="project-badge pulse">R&D Phase</div>
-                        <h3 class="project-title">Next-Gen AI Solution</h3>
+                        <div class="project-header">
+                            <div class="project-app-icon" style="display:flex; align-items:center; justify-content:center; font-size:1.8rem; background: rgba(255, 255, 255, 0.05); color: var(--text-muted);"><i class="fas fa-microchip"></i></div>
+                            <h3 class="project-title">Next-Gen AI Solution</h3>
+                        </div>
                         <p class="project-desc">
                             Experimenting with large language models and machine learning endpoints to build intuitive, context-aware digital assistants optimized for mobile hardware environments.
                         </p>
